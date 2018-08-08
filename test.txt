@@ -2,4 +2,6 @@ git"testing this"
 
 changing this feature
 
+add feature 3
+
 add feature 1
