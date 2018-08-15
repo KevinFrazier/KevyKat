@@ -1,106 +1,78 @@
 package com.kevykat.kevykat;
-
-import android.content.Intent;
-import android.graphics.Point;
-import android.os.Handler;
-import android.support.v7.app.AppCompatActivity;
+import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.view.Display;
-import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.WindowManager;
-import android.widget.FrameLayout;
+import android.view.View.OnTouchListener;
+import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.TextView;
-import java.util.Timer;
-import java.util.TimerTask;
+import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
 
+    private ViewGroup mainLayout;
+    private ImageView image;
 
-    //variables
-    private int frameHeight;
+    private int xDelta;
+    private int yDelta;
 
-    private ImageView image2;
-    private boolean start_flg = false;
-    private boolean action_flg = false;
-    private Handler handler = new Handler();
-    private Timer timer = new Timer();
-    //private SoundPlayer sound;
     @Override
-    protected void onCreate(Bundle savedInstanceState){
-        //calling parent function with "super"
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_touch);
+        mainLayout = (RelativeLayout) findViewById(R.id.main);
+        image = (ImageView) findViewById(R.id.image);
 
-        //initalizing new GameView object
-        //sets object as current phone screen
-        //setContentView(R.layout.activity_main);
-
-
-        image2 = (ImageView)findViewById(R.id.imageView2);
-
-        setContentView(R.layout.main_game);
-
+        image.setOnTouchListener(onTouchListener());
     }
 
-    public boolean onTouchEvent(MotionEvent me){
+    private OnTouchListener onTouchListener() {
+        return new OnTouchListener() {
 
-        if (start_flg == false) {
+            @SuppressLint("ClickableViewAccessibility")
+            @Override
+            public boolean onTouch(View view, MotionEvent event) {
 
-            start_flg = true;
+                final int x = (int) event.getRawX();
+                final int y = (int) event.getRawY();
+                Log.d("Kevin","(" + x + "," + y + ")");
 
-            // Why get frame height and box height here?
-            // Because the UI has not been set on the screen in OnCreate()!!
+                switch (event.getAction() & MotionEvent.ACTION_MASK) {
 
-            int boxY = (int)image2.getY();
+                    case MotionEvent.ACTION_DOWN:
+                        RelativeLayout.LayoutParams lParams = (RelativeLayout.LayoutParams)
+                                view.getLayoutParams();
 
-            // The box is a square.(height and width are the same.)
-            int boxSize = image2.getHeight();
+                        xDelta = x - lParams.leftMargin;
+                        yDelta = y - lParams.topMargin;
+                        Log.d("Kevin", "ACTION DOWN");
+                        break;
 
-            timer.schedule(new TimerTask() {
-                @Override
-                public void run() {
-                    handler.post(new Runnable() {
-                        @Override
-                        public void run() {
-                            changePos();
-                        }
-                    });
+                    case MotionEvent.ACTION_UP:
+                        Toast.makeText(MainActivity.this,
+                                "thanks for new location!", Toast.LENGTH_SHORT)
+                                .show();
+                        Log.d("Kevin", "ACTION UP");
+                        break;
+
+                    case MotionEvent.ACTION_MOVE:
+                        RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) view
+                                .getLayoutParams();
+                        layoutParams.leftMargin = x - xDelta;
+                        layoutParams.topMargin = y - yDelta;
+                        layoutParams.rightMargin = 0;
+                        layoutParams.bottomMargin = 0;
+                        view.setLayoutParams(layoutParams);
+                        Log.d("Kevin", "ACTION MOVE");
+                        break;
                 }
-            }, 0, 20);
-
-
-        }
-        else {
-            if (me.getAction() == MotionEvent.ACTION_DOWN) {
-                action_flg = true;
-
-            } else if (me.getAction() == MotionEvent.ACTION_UP) {
-                action_flg = false;
+                mainLayout.invalidate();
+                return true;
             }
-        }
-
-        return true;
-
-    }
-
-    public void changePos(){
-        image2.setX(image2.getX() + 55);
-    }
-
-    // Disable Return Button
-    @Override
-    public boolean dispatchKeyEvent(KeyEvent event) {
-
-        if (event.getAction() == KeyEvent.ACTION_DOWN) {
-            switch (event.getKeyCode()) {
-                case KeyEvent.KEYCODE_BACK:
-                    return true;
-            }
-        }
-
-        return super.dispatchKeyEvent(event);
+        };
     }
 }
