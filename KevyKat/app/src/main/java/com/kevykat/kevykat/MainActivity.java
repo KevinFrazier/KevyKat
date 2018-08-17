@@ -9,6 +9,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
@@ -17,6 +18,13 @@ import android.widget.Toast;
 ////CURRENT KNOWN PROBLEMS
 -shrinks at bottom and right sides
 -lost at top and left sides
+    -need window size in order to create appropriate margins
+        -to get window size i need to extend activity
+        -extending activity is not compatible with srccompat files
+        Solution:
+            -stay at extend AppCompatActivity
+            -create a GlobalLayoutListener to get the universal window measurements
+            
 -landscape mode not working
 -blah blah blah
 */
@@ -49,6 +57,8 @@ public class MainActivity extends AppCompatActivity {
     private int xDelta;
     private int yDelta;
 
+    private int windowHeight;
+    private int windowWidth;
 
     //creation of the xml (in this case "Activity_touch" onto the phone screen
     @Override
@@ -72,7 +82,17 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    private class OnGlobalListenerClass implements ViewTreeObserver.OnGlobalLayoutListener{
 
+        @Override
+        public void onGlobalLayout() {
+
+            View v = (View)
+        }
+
+
+
+    }
     //Action event for when the phone screen is touched
     private OnTouchListener onTouchListener() {
 
