@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:src="@drawable/red"
+        android:id="@+id/red"
+        />
+
+    <ImageView
+        android:id="@+id/blue"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:src="@drawable/blue"
+        />
+
+    <ImageView
+        android:id="@+id/green"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:src="@drawable/green" />
+
+    <ImageView
+        android:id="@+id/purple"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:src="@drawable/purple" />
+
+</android.support.constraint.ConstraintLayout>

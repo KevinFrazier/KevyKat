@@ -24,7 +24,7 @@ import android.widget.Toast;
         Solution:
             -stay at extend AppCompatActivity
             -create a GlobalLayoutListener to get the universal window measurements
-            
+
 -landscape mode not working
 -blah blah blah
 */
@@ -82,17 +82,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    private class OnGlobalListenerClass implements ViewTreeObserver.OnGlobalLayoutListener{
 
-        @Override
-        public void onGlobalLayout() {
-
-            View v = (View)
-        }
-
-
-
-    }
     //Action event for when the phone screen is touched
     private OnTouchListener onTouchListener() {
 
